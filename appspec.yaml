@@ -1,16 +1,24 @@
 version: 0.0
 os: linux
 files:
-  - source: /
+  - source: /index.html
     destination: /usr/share/nginx/html
-    overwrite: true
-
+  - source: /nginx.conf
+    destination: /etc/nginx/nginx.conf
 hooks:
   BeforeInstall:
     - location: scripts/install_dependencies.sh
       timeout: 300
       runas: root
   AfterInstall:
-    - location: scripts/restart_server.sh
+    - location: scripts/start_nginx.sh
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: scripts/start_nginx.sh
+      timeout: 300
+      runas: root
+  ApplicationStop:
+    - location: scripts/stop_nginx.sh
       timeout: 300
       runas: root
